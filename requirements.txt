@@ -1,0 +1,7 @@
+streamlit
+sentence-transformers
+openai==0.28
+pinecone-client
+pandas
+gspread
+oauth2client
