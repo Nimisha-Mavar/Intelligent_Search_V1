@@ -85,18 +85,18 @@ def connect_to_google_sheet(sheet_name):
         raise
 
 # Log tokens to the Google Sheet
-def log_tokens_to_sheet(query, tokens_used):
+def log_tokens_to_sheet(query, tokens_used,response):
     try:
         # Connect to the sheet
         sheet_name = "GPT_log"
         sheet = connect_to_google_sheet(sheet_name)
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        sheet.append_row([timestamp, query, tokens_used])
+        sheet.append_row([timestamp, query, response, tokens_used])
     except Exception as e:
         st.error(f"Failed to log tokens: {e}")
         print(f"Error: {e}")
 
-def log_feedback_to_sheet(feedback, query):
+def log_feedback_to_sheet(feedback, query, response):
     if feedback is None or not query:
         #st.warning("Feedback or query is missing!")
         return
@@ -113,7 +113,7 @@ def log_feedback_to_sheet(feedback, query):
         sheet_name = "Feedback_log"
         sheet = connect_to_google_sheet(sheet_name)
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        sheet.append_row([timestamp, query, feedback_mapped])
+        sheet.append_row([timestamp, query, response, feedback_mapped])
 
         st.success("Thank you for your feedback!")
     except Exception as e:
@@ -275,7 +275,7 @@ if st.session_state.submit_clicked:
                 if st.session_state.response is None:
                     response_text, tokens_used = get_gpt4_response(st.session_state["retrieved_texts"], query, max_tokens=300, temperature=st.secrets["temperature"])
                     st.session_state.response = response_text
-                    log_tokens_to_sheet(query, tokens_used)
+                    log_tokens_to_sheet(query, tokens_used,response_text)
                     st.write(st.session_state.response)
                 else:
                     response_text=st.session_state["response"]
@@ -288,7 +288,7 @@ if st.session_state.submit_clicked:
                 st.info('Was this answer helpful to you?')
                 sentiment_mapping = [":material/thumb_down:", ":material/thumb_up:"]
                 st.session_state.feedback = st.feedback("thumbs")
-                log_feedback_to_sheet(st.session_state.feedback,st.session_state.query)
+                log_feedback_to_sheet(st.session_state.feedback,st.session_state.query,st.session_state.response)
 
                 st.subheader("YOU CAN REFER TO THESE DOCUMENTS:")
                 display_documents(st.session_state.retrieved_pdf_title, st.session_state.retrieved_pdf_page, st.session_state.retrieved_pdf_link)
