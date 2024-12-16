@@ -280,8 +280,8 @@ with row2_col1:
 
 # Adjust token size and response type variable based on selection
 if response_type == "Short":
-    max_tokens = 300
-    response_type_instruction = "Provide a concise answer."
+    max_tokens = 800
+    response_type_instruction = "Provide a short answer."
 else:  # Long response
     max_tokens = 4096  # Max limit for GPT-4 model
     response_type_instruction = "Provide a detailed answer."
