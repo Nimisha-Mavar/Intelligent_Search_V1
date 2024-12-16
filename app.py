@@ -159,6 +159,7 @@ def get_gpt4_response(retrieved_texts, query, max_tokens, temperature):
         f"Context: {' '.join(retrieved_texts)}\n\n"
         f"User Query: {query}\n\n"
         "Task:\n"
+            f"- {response_type_instruction}\n"
             "- Analyze the provided Context to address the User Query effectively."
             "- Use bullet points for clarity if multiple aspects are present."
             "- Ensure if need then combine all given context to answer the User query."
