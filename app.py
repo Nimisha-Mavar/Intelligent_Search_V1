@@ -302,7 +302,7 @@ if st.session_state.submit_clicked:
             
             if st.session_state.retrieved_texts is not None:
                 if st.session_state.response is None:
-                    response_text, tokens_used = get_gpt4_response(st.session_state["retrieved_texts"], query, max_tokens=300, temperature=st.secrets["temperature"])
+                    response_text, tokens_used = get_gpt4_response(st.session_state["retrieved_texts"], query, max_tokens, temperature=st.secrets["temperature"])
                     st.session_state.response = response_text
                     log_tokens_to_sheet(query, tokens_used,response_text)
                     st.write(st.session_state.response)
