@@ -130,12 +130,21 @@ def search_pinecone(index, embedding):
     Perform a search in Pinecone using the query embedding.
     """
     try:
-        return index.query(
-            namespace="",             #Search within the default namespace
-            vector=embedding.tolist(),# Convert embedding to a list format
+        # Perform the search
+        response = index.query(
+            namespace="",             # Search within the default namespace
+            vector=embedding.tolist(),  # Convert embedding to a list format
             top_k=5,                  # Retrieve the top 5 matches
             include_metadata=True     # Include metadata for matched vectors
         )
+
+        # Extract all matches
+        all_matches = response
+
+        # Filter matches with a similarity score >= 65%
+        filtered_matches = [match for match in response['matches'] if match['score'] >= 0.65]
+
+        return all_matches, filtered_matches
     except Exception as e:
         st.error(f"Error querying Pinecone: {e}")
         print(f"Error querying Pinecone: {e}")
@@ -250,11 +259,31 @@ def on_button_click():
 
 # Create two columns
 col1,col2,col3,col4 = st.columns(4)
+row2_col1, row2_col2 = st.columns([3, 1])  # Adjust column width for alignment
+
 # Place buttons in each column
 with col1:
     clear_button = st.button("Clear Query", on_click=clear_text_area, key="clear_query")
 with col4:
     st.button("Submit Query", on_click=on_button_click)
+    
+# Add radio buttons for response type in the second row
+with row2_col1:
+    response_type = st.radio(
+        "Select response type:",
+        options=["Short", "Long"],
+        key="response_type",
+        horizontal=True,  # Display options in a row
+        index=0
+    )
+
+# Adjust token size and response type variable based on selection
+if response_type == "Short":
+    max_tokens = 300
+    response_type_instruction = "Provide a concise answer."
+else:  # Long response
+    max_tokens = 4096  # Max limit for GPT-4 model
+    response_type_instruction = "Provide a detailed answer."
 
 if st.session_state.submit_clicked:
         st.session_state.query = query_input
@@ -264,12 +293,12 @@ if st.session_state.submit_clicked:
                 print(f"Query: {query}")  # Debug print
 
                 embedding1 = model.encode(query)
-                answer = search_pinecone(index, embedding1)
+                answer,filtered_matches = search_pinecone(index, embedding1)
 
                 st.session_state.retrieved_texts = [match['metadata']['text'] for match in answer['matches']]
-                st.session_state.retrieved_pdf_title = [match['metadata']['title'] for match in answer['matches']]
-                st.session_state.retrieved_pdf_page = [match['metadata']['page_number'] for match in answer['matches']]
-                st.session_state.retrieved_pdf_link = [match['metadata']['link'] for match in answer['matches']]
+                st.session_state.retrieved_pdf_title = [match['metadata']['title'] for match in filtered_matches]
+                st.session_state.retrieved_pdf_page = [match['metadata']['page_number'] for match in filtered_matches]
+                st.session_state.retrieved_pdf_link = [match['metadata']['link'] for match in filtered_matches]
             
             if st.session_state.retrieved_texts is not None:
                 if st.session_state.response is None:
