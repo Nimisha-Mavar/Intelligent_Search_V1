@@ -238,7 +238,7 @@ def display_documents(retrieved_pdf_title, retrieved_pdf_page, retrieved_pdf_lin
 
 # Initialize APIs and models
 pc = Pinecone(api_key=st.secrets["pinecone"]["api_key"])
-index = pc.Index("intelligent-search-v2")
+index = pc.Index("intelligent-search-test")
 openai.api_key = st.secrets["openai_key"]
 model = SentenceTransformer(st.secrets["sentence_transformer"]["model"])
 
