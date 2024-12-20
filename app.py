@@ -297,9 +297,9 @@ if st.session_state.submit_clicked:
                 answer,filtered_matches = search_pinecone(index, embedding1)
 
                 st.session_state.retrieved_texts = [match['metadata']['text'] for match in answer['matches']]
-                st.session_state.retrieved_pdf_title = [match['metadata']['title'] for match in filtered_matches]
-                st.session_state.retrieved_pdf_page = [match['metadata']['page_number'] for match in filtered_matches]
-                st.session_state.retrieved_pdf_link = [match['metadata']['link'] for match in filtered_matches]
+                st.session_state.retrieved_pdf_title = [match['metadata']['title'] for match in answer['matches']]
+                st.session_state.retrieved_pdf_page = [match['metadata']['page_number'] for match in answer['matches']]
+                st.session_state.retrieved_pdf_link = [match['metadata']['link'] for match in answer['matches']]
             
             if st.session_state.retrieved_texts is not None:
                 if st.session_state.response is None:
