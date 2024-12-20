@@ -134,7 +134,7 @@ def search_pinecone(index, embedding):
         response = index.query(
             namespace="",             # Search within the default namespace
             vector=embedding.tolist(),  # Convert embedding to a list format
-            top_k=5,                  # Retrieve the top 5 matches
+            top_k=8,                  # Retrieve the top 5 matches
             include_metadata=True     # Include metadata for matched vectors
         )
 
@@ -319,9 +319,10 @@ if st.session_state.submit_clicked:
                 sentiment_mapping = [":material/thumb_down:", ":material/thumb_up:"]
                 st.session_state.feedback = st.feedback("thumbs")
                 log_feedback_to_sheet(st.session_state.feedback,st.session_state.query,st.session_state.response)
-
+                
                 st.subheader("YOU CAN REFER TO THESE DOCUMENTS:")
                 display_documents(st.session_state.retrieved_pdf_title, st.session_state.retrieved_pdf_page, st.session_state.retrieved_pdf_link)
+                st.write(st.session_state.retrieved_texts)
     
             else:
                 st.write("Pinecone has no relevant context.")
