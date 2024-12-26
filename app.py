@@ -8,6 +8,7 @@ import pandas as pd
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import json
+from laserembeddings import Laser
 
 #------------------- Utility Functions -------------------
 def initialize_session_state():
