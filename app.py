@@ -142,9 +142,9 @@ def search_pinecone(index, embedding):
         all_matches = response
 
         # Filter matches with a similarity score >= 65%
-        filtered_matches = [match for match in response['matches'] if match['score'] >= 0.65]
+        #filtered_matches = [match for match in response['matches'] if match['score'] >= 0.65]
 
-        return all_matches, filtered_matches
+        return all_matches
     except Exception as e:
         st.error(f"Error querying Pinecone: {e}")
         print(f"Error querying Pinecone: {e}")
@@ -294,7 +294,7 @@ if st.session_state.submit_clicked:
                 print(f"Query: {query}")  # Debug print
 
                 embedding1 = model.encode(query)
-                answer,filtered_matches = search_pinecone(index, embedding1)
+                answer = search_pinecone(index, embedding1)
 
                 st.session_state.retrieved_texts = [match['metadata']['text'] for match in answer['matches']]
                 st.session_state.retrieved_pdf_title = [match['metadata']['title'] for match in answer['matches']]
