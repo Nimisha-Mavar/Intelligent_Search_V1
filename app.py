@@ -295,6 +295,7 @@ if st.session_state.submit_clicked:
                 print(f"Query: {query}")  # Debug print
 
                 embedding1=laser.embed_sentences(query, lang='en')  # Specify the language of the query
+                st.write(embedding1)
                 answer = search_pinecone(index, embedding1)
 
                 st.session_state.retrieved_texts = [match['metadata']['text'] for match in answer['matches']]
