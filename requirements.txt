@@ -4,8 +4,8 @@ openai==0.28
 pinecone-client
 pandas
 gspread
-oauth2client
-laserembeddings
-torch
-torchvision
-torchaudio
+oauth2client==4.1.3
+laserembeddings==1.1.0
+torch==2.0.1
+torchvision==0.15.2
+torchaudio==2.0.2
