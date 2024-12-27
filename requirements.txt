@@ -5,5 +5,6 @@ pinecone-client
 pandas
 gspread
 oauth2client
-laserembeddings
-torch
+laserembeddings==1.1.0
+fairseq==0.10.2
+torch==1.10.0
