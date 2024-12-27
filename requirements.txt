@@ -4,3 +4,4 @@ pinecone-client
 pandas
 gspread
 oauth2client
+laserembeddings
