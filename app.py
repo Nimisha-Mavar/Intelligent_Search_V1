@@ -294,9 +294,9 @@ if st.session_state.submit_clicked:
                 query = st.session_state.query
                 print(f"Query: {query}")  # Debug print
                 laser = Laser(
-                    "https://dl.fbaipublicfiles.com/laser/models/93langs.fcodes",
-                    "https://dl.fbaipublicfiles.com/laser/models/93langs.fvocab",
-                    "https://dl.fbaipublicfiles.com/laser/models/bilstm.93langs.2018-12-26.pt"
+                    bpe_codes="laser_models\93langs.fcodes",
+                    bpe_vocab="laser_models\93langs.fvocab",
+                    encoder="laser_models\bilstm.93langs.2018-12-26.pt"
                 )
                 embedding1=laser.embed_sentences(query, lang='en').tolist()  # Specify the language of the query
                 st.write(embedding1)
