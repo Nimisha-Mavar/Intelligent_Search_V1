@@ -5,6 +5,7 @@ pandas
 gspread
 oauth2client
 laserembeddings==1.1.2
-torch==1.13.1
+torch
 torchvision
 torchaudio
+transformers==4.47.1
