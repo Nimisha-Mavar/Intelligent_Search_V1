@@ -134,7 +134,7 @@ def search_pinecone(index, embedding):
         # Perform the search
         response = index.query(
             namespace="",             # Search within the default namespace
-            vector=embedding.tolist(),  # Convert embedding to a list format
+            vector=embedding,  # Convert embedding to a list format
             top_k=8,                  # Retrieve the top 5 matches
             include_metadata=True     # Include metadata for matched vectors
         )
