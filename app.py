@@ -299,7 +299,7 @@ if st.session_state.submit_clicked:
                     "laser_models/bilstm.93langs.2018-12-26.pt"
                 )
                 embedding1=laser.embed_sentences(query, lang='en').tolist()  # Specify the language of the query
-                st.write(embedding1)
+
                 answer = search_pinecone(index, embedding1)
 
                 st.session_state.retrieved_texts = [match['metadata']['text'] for match in answer['matches']]
