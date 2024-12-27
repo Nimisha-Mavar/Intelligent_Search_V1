@@ -293,7 +293,11 @@ if st.session_state.submit_clicked:
             if st.session_state.feedback is None:
                 query = st.session_state.query
                 print(f"Query: {query}")  # Debug print
-
+                laser = Laser(
+                    "https://dl.fbaipublicfiles.com/laser/models/93langs.fcodes",
+                    "https://dl.fbaipublicfiles.com/laser/models/93langs.fvocab",
+                    "https://dl.fbaipublicfiles.com/laser/models/bilstm.93langs.2018-12-26.pt"
+                )
                 embedding1=laser.embed_sentences(query, lang='en').tolist()  # Specify the language of the query
                 st.write(embedding1)
                 answer = search_pinecone(index, embedding1)
