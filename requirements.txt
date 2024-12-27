@@ -1,3 +1,4 @@
+upgrade pip
 streamlit
 openai==0.28
 pinecone-client
