@@ -1,12 +1,11 @@
-python==3.9
 streamlit
 openai==0.28
 pinecone-client
 pandas
 gspread
 oauth2client
-laserembeddings== 1.1.2
-torch==1.13.1
+laserembeddings
+torch
 torchaudio
-torchsummary==1.5.1
+torchsummary
 torchvision
