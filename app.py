@@ -294,7 +294,7 @@ if st.session_state.submit_clicked:
                 query = st.session_state.query
                 print(f"Query: {query}")  # Debug print
 
-                embedding1=laser.embed_sentences(query, lang='en')  # Specify the language of the query
+                embedding1=laser.embed_sentences(query, lang='en').tolist()  # Specify the language of the query
                 st.write(embedding1)
                 answer = search_pinecone(index, embedding1)
 
