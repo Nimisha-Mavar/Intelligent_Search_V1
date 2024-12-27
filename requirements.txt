@@ -6,6 +6,6 @@ gspread
 oauth2client
 laserembeddings== 1.1.2
 torch==1.13.1
-torchaudio==2.5.1+cu121
+torchaudio
 torchsummary==1.5.1
-torchvision==0.20.1+cu121
+torchvision
