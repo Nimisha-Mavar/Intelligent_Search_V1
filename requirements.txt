@@ -4,8 +4,3 @@ pinecone-client
 pandas
 gspread
 oauth2client
-laserembeddings==1.1.0
-torch==2.5.0
-torchaudio
-torchsummary
-torchvision
