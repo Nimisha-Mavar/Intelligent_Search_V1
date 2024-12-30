@@ -291,7 +291,7 @@ if st.session_state.submit_clicked:
                 query = st.session_state.query
                 print(f"Query: {query}")  # Debug print
                
-                embedding1 = openai.embeddings.create(
+                embedding1 = openai.Embedding.create(
                           input=query,
                           model="text-embedding-3-large"
                       )
