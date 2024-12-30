@@ -298,7 +298,7 @@ if st.session_state.submit_clicked:
 
                 #embedding1=laser.embed_sentences(query, lang='en').tolist()  # Specify the language of the query
 
-                answer = search_pinecone(index, embedding1)
+                answer = search_pinecone(index, embedding1['data'][0]['embedding'])
 
                 st.session_state.retrieved_texts = [match['metadata']['text'] for match in answer['matches']]
                 st.session_state.retrieved_pdf_title = [match['metadata']['pdf_name'] for match in answer['matches']]
