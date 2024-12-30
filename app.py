@@ -237,7 +237,7 @@ def display_documents(retrieved_pdf_title, retrieved_pdf_page, retrieved_pdf_lin
 
 # Initialize APIs and models
 pc = Pinecone(api_key=st.secrets["pinecone"]["api_key"])
-index = pc.Index("demo")
+index = pc.Index("test-larg-openai")
 openai.api_key = st.secrets["openai_key"]
 
 # Streamlit UI setup
