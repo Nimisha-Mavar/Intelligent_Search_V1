@@ -1,6 +1,5 @@
 import logging
 import streamlit as st
-#from sentence_transformers import SentenceTransformer
 import openai
 from pinecone import Pinecone
 from datetime import datetime
@@ -8,7 +7,6 @@ import pandas as pd
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import json
-from laserembeddings import Laser
 
 #------------------- Utility Functions -------------------
 def initialize_session_state():
@@ -241,7 +239,6 @@ def display_documents(retrieved_pdf_title, retrieved_pdf_page, retrieved_pdf_lin
 pc = Pinecone(api_key=st.secrets["pinecone"]["api_key"])
 index = pc.Index("demo")
 openai.api_key = st.secrets["openai_key"]
-#model = SentenceTransformer(st.secrets["sentence_transformer"]["model"])
 
 # Streamlit UI setup
 st.title(":blue[Chatbot with Pinecone and GPT]")
@@ -298,7 +295,13 @@ if st.session_state.submit_clicked:
                     "laser_models/93langs.fvocab",
                     "laser_models/bilstm.93langs.2018-12-26.pt"
                 )
-                embedding1=laser.embed_sentences(query, lang='en').tolist()  # Specify the language of the query
+                
+                embedding1 = openai.embeddings.create(
+                          input=query,
+                          model="text-embedding-3-large"
+                      )
+
+                #embedding1=laser.embed_sentences(query, lang='en').tolist()  # Specify the language of the query
 
                 answer = search_pinecone(index, embedding1)
 
