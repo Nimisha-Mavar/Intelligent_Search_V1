@@ -290,12 +290,13 @@ if st.session_state.submit_clicked:
             if st.session_state.feedback is None:
                 query = st.session_state.query
                 print(f"Query: {query}")  # Debug print
-               
-                embedding1 = openai.Embedding.create(
-                          input=query,
-                          model="text-embedding-3-large"
-                      )
-
+                try:
+                    embedding1 = openai.Embedding.create(
+                              input=query,
+                              model="text-embedding-3-large"
+                          )
+                except:
+                    st.error("You exceeded your current quota, please check your plan and billing details of open ai key")
                 #embedding1=laser.embed_sentences(query, lang='en').tolist()  # Specify the language of the query
 
                 answer = search_pinecone(index, embedding1['data'][0]['embedding'])
