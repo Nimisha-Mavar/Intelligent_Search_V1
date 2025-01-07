@@ -295,43 +295,42 @@ if st.session_state.submit_clicked:
                               input=query,
                               model="text-embedding-3-large"
                           )
+                    #embedding1=laser.embed_sentences(query, lang='en').tolist()  # Specify the language of the query
+
+                    answer = search_pinecone(index, embedding1['data'][0]['embedding'])
+    
+                    st.session_state.retrieved_texts = [match['metadata']['text'] for match in answer['matches']]
+                    st.session_state.retrieved_pdf_title = [match['metadata']['title'] for match in answer['matches']]
+                    st.session_state.retrieved_pdf_page = [match['metadata']['page_number'] for match in answer['matches']]
+                    st.session_state.retrieved_pdf_link = [match['metadata']['link'] for match in answer['matches']]
+                
+                    if st.session_state.retrieved_texts is not None:
+                        if st.session_state.response is None:
+                            response_text, tokens_used = get_gpt4_response(st.session_state["retrieved_texts"], query, max_tokens, temperature=st.secrets["temperature"])
+                            st.session_state.response = response_text
+                            log_tokens_to_sheet(query, tokens_used,response_text)
+                            st.write(st.session_state.response)
+                        else:
+                            response_text=st.session_state["response"]
+                            if response_text:
+                                st.session_state.response = response_text
+                                st.write(st.session_state.response)
+        
+                        # Feedback code 
+                        #st.subheader("Feed Back:")
+                        st.info('Was this answer helpful to you?')
+                        sentiment_mapping = [":material/thumb_down:", ":material/thumb_up:"]
+                        st.session_state.feedback = st.feedback("thumbs")
+                        log_feedback_to_sheet(st.session_state.feedback,st.session_state.query,st.session_state.response)
+                        
+                        st.subheader("YOU CAN REFER TO THESE DOCUMENTS:")
+                        display_documents(st.session_state.retrieved_pdf_title, st.session_state.retrieved_pdf_page, st.session_state.retrieved_pdf_link)
+                        st.write(st.session_state.retrieved_texts)
+            
+                    else:
+                        st.write("Pinecone has no relevant context.")
                 except:
                     st.error("You exceeded your current quota, please check your plan and billing details of open ai key")
-                #embedding1=laser.embed_sentences(query, lang='en').tolist()  # Specify the language of the query
-
-                answer = search_pinecone(index, embedding1['data'][0]['embedding'])
-
-                st.session_state.retrieved_texts = [match['metadata']['text'] for match in answer['matches']]
-                st.session_state.retrieved_pdf_title = [match['metadata']['title'] for match in answer['matches']]
-                st.session_state.retrieved_pdf_page = [match['metadata']['page_number'] for match in answer['matches']]
-                st.session_state.retrieved_pdf_link = [match['metadata']['link'] for match in answer['matches']]
-            
-            if st.session_state.retrieved_texts is not None:
-                if st.session_state.response is None:
-                    response_text, tokens_used = get_gpt4_response(st.session_state["retrieved_texts"], query, max_tokens, temperature=st.secrets["temperature"])
-                    st.session_state.response = response_text
-                    log_tokens_to_sheet(query, tokens_used,response_text)
-                    st.write(st.session_state.response)
-                else:
-                    response_text=st.session_state["response"]
-                    if response_text:
-                        st.session_state.response = response_text
-                        st.write(st.session_state.response)
-
-                # Feedback code 
-                #st.subheader("Feed Back:")
-                st.info('Was this answer helpful to you?')
-                sentiment_mapping = [":material/thumb_down:", ":material/thumb_up:"]
-                st.session_state.feedback = st.feedback("thumbs")
-                log_feedback_to_sheet(st.session_state.feedback,st.session_state.query,st.session_state.response)
-                
-                st.subheader("YOU CAN REFER TO THESE DOCUMENTS:")
-                display_documents(st.session_state.retrieved_pdf_title, st.session_state.retrieved_pdf_page, st.session_state.retrieved_pdf_link)
-                st.write(st.session_state.retrieved_texts)
-    
-            else:
-                st.write("Pinecone has no relevant context.")
-        
         else:
             st.warning('Enter the Query', icon="⚠️")
 
